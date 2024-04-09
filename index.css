@@ -1,0 +1,118 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+input.white {
+  background-color: white;
+}
+
+input.aka {
+  background-color: lightpink;
+}
+
+input.ok {
+  background-color: #ccf9cc;
+}
+
+/** 10台 */
+input.ju{
+    background-color: lightsteelblue;
+}
+
+/** 20台 */
+input.niju{
+    background-color: lavender;
+}
+
+/** 30台 */
+input.sanju{
+    background-color: lemonchiffon;
+}
+
+/** 40台 */
+input.yonju{
+    background-color: lightgreen;
+}
+
+/** 50台 */
+input.goju{
+    /** background-color: forestgreen; **/
+    background-color: #6fc74f;
+    /** background-color: forestgreen; **/
+    /** color: white; **/
+}
+
+/** 10台 */
+div.ju{
+    background-color: lightsteelblue;
+}
+
+/** 20台 */
+div.niju{
+    background-color: lavender;
+}
+
+/** 30台 */
+div.sanju{
+    background-color: lemonchiffon;
+}
+
+/** 40台 */
+div.yonju{
+    background-color: lightgreen;
+}
+/** 50台 */
+div.goju{
+    background-color: #6fc74f;
+}
+
+/** 10台 */
+label.ju{
+    background-color: lightsteelblue;
+}
+
+/** 20台 */
+label.niju{
+    background-color: lavender;
+}
+
+/** 30台 */
+label.sanju{
+    background-color: lemonchiffon;
+}
+
+/** 40台 */
+label.yonju{
+    background-color: lightgreen;
+}
+/** 50台 */
+label.goju{
+    background-color: #6fc74f;
+}
+
+div.flex{
+    display: flex;
+}
+div.submitbutton{
+    background: white;
+    margin: 1em;
+}
+div.sleep_sum{
+    background: white;
+    margin: 1em;
+}
+div.deep_sleep_sum{
+    background: white;
+    margin: 1em;
+}
+
