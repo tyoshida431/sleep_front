@@ -13,7 +13,7 @@ function getSleepBackColor(time){
      ret="sanju";
    }else if(3===hourNum){
      ret="niju";
-   }else if(1===hourNum){
+   }else if(1<=hourNum&&hourNum<=2){
      ret="ju";
    }else if(0===hourNum){
      ret="aka";
