@@ -5,15 +5,15 @@ function getSleepBackColor(time){
    let hour=time.substr(0,time.indexOf(":",0));
    let hourNum=Number(hour);
    var ret="";
-   if(9<=hourNum){
+   if(6<=hourNum){
      ret="goju";
-   }else if(8===hourNum){
+   }else if(5===hourNum){
      ret="yonju";
-   }else if(7===hourNum){
+   }else if(4===hourNum){
      ret="sanju";
-   }else if(6===hourNum){
+   }else if(3===hourNum){
      ret="niju";
-   }else if(1<=hourNum&&hourNum<=5){
+   }else if(1===hourNum){
      ret="ju";
    }else if(0===hourNum){
      ret="aka";
