@@ -96,17 +96,17 @@ function getSumSleepColor(time){
 function getSumDeepSleepColor(time){
   var ret="";
   let hourNum=Math.floor(time/60);
-  if(hourNum<18){
+  if(hourNum<7){
     // 背景は白
-  }else if(18<=hourNum&&hourNum<36){
+  }else if(7<=hourNum&&hourNum<14){
     ret="ju";
-  }else if(36<=hourNum&&hourNum<54){
+  }else if(14<=hourNum&&hourNum<21){
     ret="niju";
-  }else if(54<=hourNum&&hourNum<72){
+  }else if(21<=hourNum&&hourNum<28){
     ret="sanju";
-  }else if(72<=hourNum&&hourNum<90){
+  }else if(28<=hourNum&&hourNum<36){
     ret="yonju";
-  }else if(90<=hourNum){
+  }else if(36<=hourNum){
     ret="goju";
   }
   return ret;
