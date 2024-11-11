@@ -5,15 +5,15 @@ function getSleepBackColor(time){
    let hour=time.substr(0,time.indexOf(":",0));
    let hourNum=Number(hour);
    var ret="";
-   if(6<=hourNum){
+   if(9<=hourNum){
      ret="goju";
-   }else if(5===hourNum){
+   }else if(8===hourNum){
      ret="yonju";
-   }else if(4===hourNum){
+   }else if(7===hourNum){
      ret="sanju";
-   }else if(3===hourNum){
+   }else if(6===hourNum){
      ret="niju";
-   }else if(1<=hourNum&&hourNum<=2){
+   }else if(1<=hourNum&&hourNum<=5){
      ret="ju";
    }else if(0===hourNum){
      ret="aka";
@@ -77,17 +77,17 @@ function getSleeptoHour(time){
 function getSumSleepColor(time){
   var ret="";
   let hourNum=Math.floor(time/60);
-  if(hourNum<50){
+  if(hourNum<36){
     // 背景は白
-  }else if(50<=hourNum&&hourNum<100){
+  }else if(36<=hourNum&&hourNum<72){
     ret="ju";
-  }else if(100<=hourNum&&hourNum<150){
+  }else if(72<=hourNum&&hourNum<108){
     ret="niju";
-  }else if(150<=hourNum&&hourNum<200){
+  }else if(108<=hourNum&&hourNum<144){
     ret="sanju";
-  }else if(200<=hourNum&&hourNum<248){
+  }else if(144<=hourNum&&hourNum<180){
     ret="yonju";
-  }else if(248<=hourNum){
+  }else if(180<=hourNum){
     ret="goju";
   }
   return ret;
