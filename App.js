@@ -142,6 +142,7 @@ function getNextMonthNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
+  // 0始まりの為+1します。
   var month=now.getMonth()+1;
   if(month===12){
     year++;
@@ -177,6 +178,7 @@ function getPreMonthNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
+  // 0始まりのため+1します。
   var month=now.getMonth()+1;
   if(month===1){
     year--; 
@@ -330,22 +332,6 @@ function App() {
     document.getElementById("sleep_sum_box").className=getSumSleepColor(sleep_sum);
     document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deep_sleep_sum);
     document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(deep_sleep_sum);
-    //const test = 
-    //  [
-    //      {
-    //      date: '2023-10-01',
-    //      wake: 52,
-    //      bath: 0,
-    //      bed: -50,
-    //      sleep_in: '-',
-    //      sleep: '07:45:00',
-    //      deep_sleep: '03:21:00',
-    //      },
-    //  ];
-    //console.log(data);
-    //console.log(test);
-    //console.log(data);
-    //console.log(JSON.stringify(data));
     const post_options={
       method: "POST",
       headers: {"ContentType": "application/json"},
@@ -371,11 +357,11 @@ function App() {
       deep_sleep_sum+=getSleeptoMin(row.deep_sleep);
     })()
   ));
-  console.log(sleep_sum);
-  console.log(deep_sleep_sum);
-  console.log(getSleeptoHour(sleep_sum));
-  console.log(getSleeptoHour(deep_sleep_sum));
-  console.log(preMonth);
+  //console.log(sleep_sum);
+  //console.log(deep_sleep_sum);
+  //console.log(getSleeptoHour(sleep_sum));
+  //console.log(getSleeptoHour(deep_sleep_sum));
+  //console.log(preMonth);
   return (
     <form onSubmit={(e) => HandleSubmit(e)}>
     <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
