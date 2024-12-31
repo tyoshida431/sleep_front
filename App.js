@@ -112,48 +112,83 @@ function getSumDeepSleepColor(time){
   return ret;
 }
 
-function App() {
-    //const data = 
-    //  [
-    //      {
-    //      date: '2023-10-01',
-    //      wake: 52,
-    //      bath: 0,
-    //      bed: -50,
-    //      sleep_in: '-',
-    //      sleep: '07:45:00',
-    //      deep_sleep: '03:21:00',
-    //      },
-    //      {
-    //      date: '2023-10-02',
-    //      wake: -276,
-    //      bath: 0,
-    //      bed: -9,
-    //      sleep_in: '12min16s',
-    //      sleep: '03:41:00',
-    //      deep_sleep: '00:41:00',
-    //      },
-    //      {
-    //      date: '2023-10-03',
-    //      wake: 430,
-    //      bath: 0,
-    //      bed: -94,
-    //      sleep_in: '13min33s',
-    //      sleep: '10:54:00',
-    //      deep_sleep: '01:33:00',
-    //      },
-    //      {
-    //      date: '2023-10-04',
-    //      wake: 0,
-    //      bath: 0,
-    //      bed: 0,
-    //      sleep_in: '',
-    //      sleep: '',
-    //      deep_sleep: '',
-    //      },
-    //  ];
+//function isNumber(num){
+//  var ret=false;
+//  ret!=isNaN(num);
+//  return ret;
+//}
 
-  // TODO : パラメーター未指定で今月表示に変更する。
+function getNextMonth(queryMonth){
+  var ret="";
+  if(queryMonth===undefined){
+    ret=getNextMonthNow();
+  }else{
+    var yearString=queryMonth.substr(0,4);
+    var monthString=queryMonth.substr(4,2);
+    var yearNum=parseInt(yearString);
+    var monthNum=parseInt(monthString);
+    if(monthNum===12){
+      yearNum++;
+      monthNum=1;
+    }else{
+      monthNum++;
+    }
+    ret=yearNum.toString()+monthNum.toString().padStart(2,0);
+  }
+  return ret;
+}
+
+function getNextMonthNow(){
+  var ret="";
+  const now=new Date();
+  var year=now.getFullYear();
+  var month=now.getMonth()+1;
+  if(month===12){
+    year++;
+    month=1;
+  }else{
+    month++;
+  }
+  ret=year.toString()+month.toString().padStart(2,0);
+  return ret;
+}
+
+function getPreMonth(queryMonth){
+  var ret="";
+  if(queryMonth===undefined){
+    ret=getPreMonthNow();
+  }else{
+    var yearString=queryMonth.substr(0,4);
+    var monthString=queryMonth.substr(4,2);
+    var yearNum=parseInt(yearString);
+    var monthNum=parseInt(monthString);
+    if(monthNum===1){
+      yearNum--;
+      monthNum=12;
+    }else{
+      monthNum--;
+    }
+    ret=yearNum.toString()+monthNum.toString().padStart(2,0);
+  }
+  return ret;
+}
+
+function getPreMonthNow(){
+  var ret="";
+  const now=new Date();
+  var year=now.getFullYear();
+  var month=now.getMonth()+1;
+  if(month===1){
+    year--; 
+    month=12;
+  }else{
+    month--;
+  } 
+  ret=year.toString()+month.toString().padStart(2,0);
+  return ret;
+}
+
+function App() {
 
   const [data, setGets]=useState([]);
 
@@ -168,10 +203,11 @@ function App() {
   params.month=month[1];
   console.log(params);
   let query=new URLSearchParams(params);
-  console.log(query);
+  //console.log("query : "+month);
+  const preMonth=getPreMonth(month[1]);
+  const nextMonth=getNextMonth(month[1]);
 
   useEffect(() => {
-    // other code
     if(!urlParam){
       fetch('/sleep',{method:'GET'})
       .then(res=>res.json())
@@ -188,6 +224,12 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
+  //const handleLostForcusNumber = (event) => {
+  //  let number=event.target.value;
+  //  if(!isNumber(number)){
+  //    alert("数字を入力してください。");
+  //  }
+  //};
   const handleChangeNumber = (event) => {
     let wakeBedClassName=getWakeBackColor(event.target.value);
     event.target.className=wakeBedClassName;
@@ -333,8 +375,10 @@ function App() {
   console.log(deep_sleep_sum);
   console.log(getSleeptoHour(sleep_sum));
   console.log(getSleeptoHour(deep_sleep_sum));
+  console.log(preMonth);
   return (
     <form onSubmit={(e) => HandleSubmit(e)}>
+    <div><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
     <div className="flex">
       <div className="submitbutton"><input type="submit" value="保存" /></div>
       <div id="sleep_sum_box" className={getSumSleepColor(sleep_sum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleep_sum)}>{getSleeptoHour(sleep_sum)}</label></div></div>
