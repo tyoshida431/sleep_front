@@ -80,6 +80,7 @@ function changeMintoSleep(time){
   return hour+":"+min+":00";
 }
 
+// 睡眠合計の背景色を取得する。
 function getSumSleepColor(time){
   var ret="";
   let hourNum=Math.floor(time/60);
@@ -99,6 +100,7 @@ function getSumSleepColor(time){
   return ret;
 }
 
+// 深い睡眠合計の背景色を取得する。
 function getSumDeepSleepColor(time){
   var ret="";
   let hourNum=Math.floor(time/60);
@@ -118,10 +120,11 @@ function getSumDeepSleepColor(time){
   return ret;
 }
 
+// 次の月を取得する。
 function getNextMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
-    ret=getNextMonthFromNow();
+    ret=calcNextMonthFromNow();
   }else{
     var yearString=queryMonth.substr(0,4);
     var monthString=queryMonth.substr(4,2);
@@ -138,7 +141,8 @@ function getNextMonth(queryMonth){
   return ret;
 }
 
-function getNextMonthFromNow(){
+// 現時点から次の月を計算する。
+function calcNextMonthFromNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
@@ -154,10 +158,11 @@ function getNextMonthFromNow(){
   return ret;
 }
 
+// 前の月を取得する。
 function getPreMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
-    ret=getPreMonthFromNow();
+    ret=calcPreMonthFromNow();
   }else{
     var yearString=queryMonth.substr(0,4);
     var monthString=queryMonth.substr(4,2);
@@ -174,7 +179,8 @@ function getPreMonth(queryMonth){
   return ret;
 }
 
-function getPreMonthFromNow(){
+// 今から前の月を計算する。
+function calcPreMonthFromNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
@@ -197,16 +203,14 @@ function App() {
   const [error,setError]=useState(null);
 
   let urlParam = window.location.search.substring(1);
-  console.log(urlParam);
   let month=urlParam.split('=');
-  console.log(month);
   let params={month: ''};
   params.month=month[1];
-  console.log(params);
   let query=new URLSearchParams(params);
   const preMonth=getPreMonth(month[1]);
   const nextMonth=getNextMonth(month[1]);
 
+  // 睡眠一覧を取得する。
   useEffect(() => {
     const fetchData=async()=>{
       try{
@@ -242,6 +246,7 @@ function App() {
     return(<p>エラー:{error}</p>);
   }
 
+  // 入力されたデータに対して背景色を設定する。
   const handleChangeNumber = (event) => {
     let wakeBedClassName=getWakeBackColor(event.target.value);
     event.target.className=wakeBedClassName;
@@ -266,6 +271,8 @@ function App() {
       event.target.className="white";
     }
   };
+
+  // 保存ボタンが押下された場合のハンドラー。
   const HandleSubmit = (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
@@ -337,6 +344,7 @@ function App() {
     document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deepSleepSum);
     document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(deepSleepSum);
 
+    // バックエンドに一覧データーを送信する。
     try{
       const post_options={
         method: "POST",
@@ -362,6 +370,8 @@ function App() {
       return(<p>{error}</p>);
     }    
   };
+
+  // 睡眠一覧を表示する。
   var sleepSum=0;
   var deepSleepSum=0;
   data.map((row) => (
