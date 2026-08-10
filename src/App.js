@@ -1,6 +1,7 @@
 import './App.css';
 import React, {useState, useEffect} from 'react';
 
+// 睡眠の背景色を取得する。
 function getSleepBackColor(time){
    let hour=time.substr(0,time.indexOf(":",0));
    let hourNum=Number(hour);
@@ -24,6 +25,7 @@ function getSleepBackColor(time){
    return ret;
 }
 
+// 深い睡眠の背景色を取得する。
 function getDeepSleepBackColor(time){
    let hour=time.substr(0,time.indexOf(":",0));
    let hourNum=Number(hour);
@@ -43,6 +45,7 @@ function getDeepSleepBackColor(time){
    return ret;
 }
 
+// 起床の背景色を取得する。
 function getWakeBackColor(time){
   var ret="";
   if(time<0){
@@ -52,7 +55,9 @@ function getWakeBackColor(time){
   }
   return ret;
 }
-function getSleeptoMin(time){
+
+// 睡眠を分数に変換する。
+function changeSleeptoMin(time){
   let hour=time.substr(0,time.indexOf(":",0));
   let hourNum=Number(hour);
   let min=time.substr(3,2); 
@@ -306,11 +311,11 @@ function App() {
           break;
         case 5:
           sleep.sleep=value;
-          sleepSum+=getSleeptoMin(value);
+          sleepSum+=changeSleeptoMin(value);
           break;
         case 6:
           sleep.deep_sleep=value;
-          deepSleepSum+=getSleeptoMin(value);
+          deepSleepSum+=changeSleeptoMin(value);
           break;
         case 7:
           sleep.description=value;
@@ -365,8 +370,8 @@ function App() {
       row.bedClassName=getWakeBackColor(row.bed);
       row.sleepClassName=getSleepBackColor(row.sleep);
       row.deepSleepClassName=getDeepSleepBackColor(row.deep_sleep);
-      sleepSum+=getSleeptoMin(row.sleep);
-      deepSleepSum+=getSleeptoMin(row.deep_sleep);
+      sleepSum+=changeSleeptoMin(row.sleep);
+      deepSleepSum+=changeSleeptoMin(row.deep_sleep);
     })()
   ));
   return (
