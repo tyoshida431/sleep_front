@@ -115,7 +115,7 @@ function getSumDeepSleepColor(time){
 function getNextMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
-    ret=getNextMonthNow();
+    ret=getNextMonthFromNow();
   }else{
     var yearString=queryMonth.substr(0,4);
     var monthString=queryMonth.substr(4,2);
@@ -132,7 +132,7 @@ function getNextMonth(queryMonth){
   return ret;
 }
 
-function getNextMonthNow(){
+function getNextMonthFromNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
@@ -151,7 +151,7 @@ function getNextMonthNow(){
 function getPreMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
-    ret=getPreMonthNow();
+    ret=getPreMonthFromNow();
   }else{
     var yearString=queryMonth.substr(0,4);
     var monthString=queryMonth.substr(4,2);
@@ -168,7 +168,7 @@ function getPreMonth(queryMonth){
   return ret;
 }
 
-function getPreMonthNow(){
+function getPreMonthFromNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
@@ -264,8 +264,8 @@ function App() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     var counter=0;
-    var sleep_sum=0;
-    var deep_sleep_sum=0;
+    var sleepSum=0;
+    var deepSleepSum=0;
     var data=[];
     var sleep={
       date: '',
@@ -306,11 +306,11 @@ function App() {
           break;
         case 5:
           sleep.sleep=value;
-          sleep_sum+=getSleeptoMin(value);
+          sleepSum+=getSleeptoMin(value);
           break;
         case 6:
           sleep.deep_sleep=value;
-          deep_sleep_sum+=getSleeptoMin(value);
+          deepSleepSum+=getSleeptoMin(value);
           break;
         case 7:
           sleep.description=value;
@@ -324,16 +324,12 @@ function App() {
     });
     
     // 合計を反映します。
-    console.log(document.getElementById("sleep_sum"));
-    console.log(document.getElementById("sleep_sum_box"));
-    console.log(sleep_sum);
-    console.log(deep_sleep_sum);
-    document.getElementById("sleep_sum").textContent=getSleeptoHour(sleep_sum);
-    document.getElementById("deep_sleep_sum").textContent=getSleeptoHour(deep_sleep_sum);
-    document.getElementById("sleep_sum").className=getSumSleepColor(sleep_sum);
-    document.getElementById("sleep_sum_box").className=getSumSleepColor(sleep_sum);
-    document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deep_sleep_sum);
-    document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(deep_sleep_sum);
+    document.getElementById("sleep_sum").textContent=getSleeptoHour(sleepSum);
+    document.getElementById("deep_sleep_sum").textContent=getSleeptoHour(deepSleepSum);
+    document.getElementById("sleep_sum").className=getSumSleepColor(sleepSum);
+    document.getElementById("sleep_sum_box").className=getSumSleepColor(sleepSum);
+    document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deepSleepSum);
+    document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(deepSleepSum);
 
     try{
       const post_options={
@@ -360,8 +356,8 @@ function App() {
       return(<p>{error}</p>);
     }    
   };
-  var sleep_sum=0;
-  var deep_sleep_sum=0;
+  var sleepSum=0;
+  var deepSleepSum=0;
   data.map((row) => (
     (() => {
       row.wakeClassName=getWakeBackColor(row.wake);
@@ -369,8 +365,8 @@ function App() {
       row.bedClassName=getWakeBackColor(row.bed);
       row.sleepClassName=getSleepBackColor(row.sleep);
       row.deepSleepClassName=getDeepSleepBackColor(row.deep_sleep);
-      sleep_sum+=getSleeptoMin(row.sleep);
-      deep_sleep_sum+=getSleeptoMin(row.deep_sleep);
+      sleepSum+=getSleeptoMin(row.sleep);
+      deepSleepSum+=getSleeptoMin(row.deep_sleep);
     })()
   ));
   return (
@@ -378,8 +374,8 @@ function App() {
     <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
     <div className="flex">
       <div className="submitbutton"><input type="submit" value="保存" /></div>
-      <div id="sleep_sum_box" className={getSumSleepColor(sleep_sum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleep_sum)}>{getSleeptoHour(sleep_sum)}</label></div></div>
-      <div id="deep_sleep_sum_box" className={getSumDeepSleepColor(deep_sleep_sum)}> <div id="deep_sleep_sum_div" className="deep_sleep_sum"><label id="deep_sleep_sum" className={getSumDeepSleepColor(deep_sleep_sum)}>{getSleeptoHour(deep_sleep_sum)}</label></div></div>
+      <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{getSleeptoHour(sleepSum)}</label></div></div>
+      <div id="deep_sleep_sum_box" className={getSumDeepSleepColor(deepSleepSum)}> <div id="deep_sleep_sum_div" className="deep_sleep_sum"><label id="deep_sleep_sum" className={getSumDeepSleepColor(deepSleepSum)}>{getSleeptoHour(deepSleepSum)}</label></div></div>
     </div>
     <table border='1'>
       <thead>
