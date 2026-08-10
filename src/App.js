@@ -112,12 +112,6 @@ function getSumDeepSleepColor(time){
   return ret;
 }
 
-//function isNumber(num){
-//  var ret=false;
-//  ret!=isNaN(num);
-//  return ret;
-//}
-
 function getNextMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
@@ -211,14 +205,14 @@ function App() {
     const fetchData=async()=>{
       try{
         if(!urlParam){
-          const response=await fetch('/sleep',{method:'GET'});
+          const response=await fetch(`${process.env.REACT_APP_BASE_URL}/sleep`,{method:'GET'});
           if(!response.ok){
             throw new Error(`HTTP error! status : ${response.status}`);
           }
           const result=await response.json();
           setGets(result);
         }else{
-          const response=await fetch('/sleep?'+query,{method:'GET'});
+          const response=await fetch(`${process.env.REACT_APP_BASE_URL}/sleep?`+query,{method:'GET'});
           if(!response.ok){
             throw new Error(`HTTP error! status : ${response.status}`);
           }
@@ -347,7 +341,7 @@ function App() {
         headers: {"ContentType": "application/json"},
         body: JSON.stringify(data)
       };
-      const response=fetch('sleep',post_options);
+      const response=fetch(`${process.env.REACT_APP_BASE_URL}/sleep`,post_options);
       if(!response.ok){
         throw new Error(`HTTP error! status : ${response.status}`);
       }
