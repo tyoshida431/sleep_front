@@ -327,8 +327,6 @@ function App() {
           break;
       };
       counter=counter+1;
-      //console.log(key);
-      //console.log(value);
     });
     
     // 合計を反映します。
@@ -342,17 +340,31 @@ function App() {
     document.getElementById("sleep_sum_box").className=getSumSleepColor(sleep_sum);
     document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deep_sleep_sum);
     document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(deep_sleep_sum);
-    const post_options={
-      method: "POST",
-      headers: {"ContentType": "application/json"},
-      body: JSON.stringify(data)
-    };
-    // TODO : エラー処理を書きます。
-    fetch('/sleep',post_options);
-    //  .then(res=>res.json())
-    //  .then(data=>{
-    //  setGets(data)
-    //  });
+
+    try{
+      const post_options={
+        method: "POST",
+        headers: {"ContentType": "application/json"},
+        body: JSON.stringify(data)
+      };
+      const response=fetch('sleep',post_options);
+      if(!response.ok){
+        throw new Error(`HTTP error! status : ${response.status}`);
+      }
+      const result=response.json();
+      setGets(result)
+    }catch(error){
+      return(<p>error</p>);
+    }finally{
+      setLoading(false);
+    }
+
+    if(loading){
+      return(<p>読込中...</p>);
+    }
+    if(error){
+      return(<p>{error}</p>);
+    }    
   };
   var sleep_sum=0;
   var deep_sleep_sum=0;
