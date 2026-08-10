@@ -115,7 +115,7 @@ function getSumDeepSleepColor(time){
 function getNextMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
-    ret=getNextMonthNow();
+    ret=getNextMonthFromNow();
   }else{
     var yearString=queryMonth.substr(0,4);
     var monthString=queryMonth.substr(4,2);
@@ -132,7 +132,7 @@ function getNextMonth(queryMonth){
   return ret;
 }
 
-function getNextMonthNow(){
+function getNextMonthFromNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
@@ -151,7 +151,7 @@ function getNextMonthNow(){
 function getPreMonth(queryMonth){
   var ret="";
   if(queryMonth===undefined){
-    ret=getPreMonthNow();
+    ret=getPreMonthFromNow();
   }else{
     var yearString=queryMonth.substr(0,4);
     var monthString=queryMonth.substr(4,2);
@@ -168,7 +168,7 @@ function getPreMonth(queryMonth){
   return ret;
 }
 
-function getPreMonthNow(){
+function getPreMonthFromNow(){
   var ret="";
   const now=new Date();
   var year=now.getFullYear();
