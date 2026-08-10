@@ -193,45 +193,55 @@ function getPreMonthNow(){
 function App() {
 
   const [data, setGets]=useState([]);
+  const [loading,setLoading]=useState(true);
+  const [error,setError]=useState(null);
 
   let urlParam = window.location.search.substring(1);
   console.log(urlParam);
   let month=urlParam.split('=');
   console.log(month);
-  //let params={};
-  //params.month=month
-  //let params={month: '202310'};
   let params={month: ''};
   params.month=month[1];
   console.log(params);
   let query=new URLSearchParams(params);
-  //console.log("query : "+month);
   const preMonth=getPreMonth(month[1]);
   const nextMonth=getNextMonth(month[1]);
 
   useEffect(() => {
-    if(!urlParam){
-      fetch('/sleep',{method:'GET'})
-      .then(res=>res.json())
-      .then(data=>{
-        setGets(data)
-      })
-    }else{
-      fetch('/sleep?'+query,{method:'GET'})
-      .then(res=>res.json())
-      .then(data=>{
-        setGets(data)
-      })
-    }
+    const fetchData=async()=>{
+      try{
+        if(!urlParam){
+          const response=await fetch('/sleep',{method:'GET'});
+          if(!response.ok){
+            throw new Error(`HTTP error! status : ${response.status}`);
+          }
+          const result=await response.json();
+          setGets(result);
+        }else{
+          const response=await fetch('/sleep?'+query,{method:'GET'});
+          if(!response.ok){
+            throw new Error(`HTTP error! status : ${response.status}`);
+          }
+          const result=await response.json();
+          setGets(result);
+        };
+      }catch(err){
+        setError(err.message);
+      }finally{
+        setLoading(false);
+      }     
+    };
+    fetchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   },[]);
 
-  //const handleLostForcusNumber = (event) => {
-  //  let number=event.target.value;
-  //  if(!isNumber(number)){
-  //    alert("数字を入力してください。");
-  //  }
-  //};
+  if(loading){
+    return(<p>読込中...</p>);
+  }
+  if(error){
+    return(<p>エラー:{error}</p>);
+  }
+
   const handleChangeNumber = (event) => {
     let wakeBedClassName=getWakeBackColor(event.target.value);
     event.target.className=wakeBedClassName;
@@ -357,11 +367,6 @@ function App() {
       deep_sleep_sum+=getSleeptoMin(row.deep_sleep);
     })()
   ));
-  //console.log(sleep_sum);
-  //console.log(deep_sleep_sum);
-  //console.log(getSleeptoHour(sleep_sum));
-  //console.log(getSleeptoHour(deep_sleep_sum));
-  //console.log(preMonth);
   return (
     <form onSubmit={(e) => HandleSubmit(e)}>
     <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
