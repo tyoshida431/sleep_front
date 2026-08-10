@@ -65,7 +65,8 @@ function changeSleeptoMin(time){
   return hourNum*60+minNum;
 }
 
-function getSleeptoHour(time){
+// 分数を00:00:00の形式の文字列に変換する。
+function changeMintoSleep(time){
   let hourNum=Math.floor(time/60);
   var hour=String(hourNum);
   if(hourNum<10){
@@ -329,8 +330,8 @@ function App() {
     });
     
     // 合計を反映します。
-    document.getElementById("sleep_sum").textContent=getSleeptoHour(sleepSum);
-    document.getElementById("deep_sleep_sum").textContent=getSleeptoHour(deepSleepSum);
+    document.getElementById("sleep_sum").textContent=changeMintoSleep(sleepSum);
+    document.getElementById("deep_sleep_sum").textContent=changeMintoSleep(deepSleepSum);
     document.getElementById("sleep_sum").className=getSumSleepColor(sleepSum);
     document.getElementById("sleep_sum_box").className=getSumSleepColor(sleepSum);
     document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deepSleepSum);
@@ -379,8 +380,8 @@ function App() {
     <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
     <div className="flex">
       <div className="submitbutton"><input type="submit" value="保存" /></div>
-      <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{getSleeptoHour(sleepSum)}</label></div></div>
-      <div id="deep_sleep_sum_box" className={getSumDeepSleepColor(deepSleepSum)}> <div id="deep_sleep_sum_div" className="deep_sleep_sum"><label id="deep_sleep_sum" className={getSumDeepSleepColor(deepSleepSum)}>{getSleeptoHour(deepSleepSum)}</label></div></div>
+      <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{changeMintoSleep(sleepSum)}</label></div></div>
+      <div id="deep_sleep_sum_box" className={getSumDeepSleepColor(deepSleepSum)}> <div id="deep_sleep_sum_div" className="deep_sleep_sum"><label id="deep_sleep_sum" className={getSumDeepSleepColor(deepSleepSum)}>{changeMintoSleep(deepSleepSum)}</label></div></div>
     </div>
     <table border='1'>
       <thead>
