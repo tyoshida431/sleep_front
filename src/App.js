@@ -358,7 +358,7 @@ function App() {
       const result=response.json();
       setGets(result)
     }catch(error){
-      return(<p>error</p>);
+      return(<p>{error}</p>);
     }finally{
       setLoading(false);
     }
