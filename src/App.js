@@ -111,6 +111,7 @@ function App() {
     form.forEach(function(value,key){
       counter=makePostData(value,key,counter,postData,sleep);
       // TODO : sleepもクラスにして参照渡しで戻せるか確認すること。
+      // TODO : sleepをクラスにして参照渡しで情報を追記し、それからaddの時に自前のプロパティーを連想配列に変換します。
       if(counter===0){
         // リスト新規作成。
         sleep={date: '',wake: 0,bath: 0,bed: 0,sleep_in: '',sleep: '',deep_sleep: '',description: ''};
