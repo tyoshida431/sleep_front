@@ -96,7 +96,6 @@ function App() {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     var postData=new PostData(0,0,[]);
-    var counter=0;
     var sleep=new Sleep(
       '',
       0,
