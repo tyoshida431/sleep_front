@@ -109,13 +109,12 @@ function App() {
     // TODO : あまり綺麗ではない。sleepの追加がポイントだと思う。直すこと。
     // TODO : sleepエントリ(一行)もクラスにするかだが、それでJSON.stringify通るかどうか確認すること。
     form.forEach(function(value,key){
-      makePostData(value,key,counter,postData,sleep);
+      counter=makePostData(value,key,counter,postData,sleep);
+      // TODO : sleepもクラスにして参照渡しで戻せるか確認すること。
       if(counter===0){
         // リスト新規作成。
         sleep={date: '',wake: 0,bath: 0,bed: 0,sleep_in: '',sleep: '',deep_sleep: '',description: ''};
         sleep.date=value;
-      }else if(counter===7){
-        counter=-1;
       }
       counter=counter+1;
     });

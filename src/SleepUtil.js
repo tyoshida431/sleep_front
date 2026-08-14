@@ -246,10 +246,12 @@ function makePostData(value,key,counter,postData,sleep){
     case 7:
       sleep.description=value;
       postData.addData(sleep);
+      counter=-1;
       break;
     default:
       break;
   };
+  return counter;
 }
 
 export {
