@@ -11,7 +11,8 @@ import {
     getNextMonth,
     getPreMonth,
     makePostData,
-    PostData
+    PostData,
+    Sleep
 } from "./SleepUtil";
 
 function App() {
@@ -91,36 +92,28 @@ function App() {
   };
 
   // 保存ボタンが押下された場合のハンドラー。
-  const HandleSubmit = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
     var postData=new PostData(0,0,[]);
     var counter=0;
-    var sleep={
-      date: '',
-      wake: 0,
-      bath: 0,
-      bed: 0,
-      sleep_in: '',
-      sleep: '',
-      deep_sleep: '',
-      description: ''
-    };
-    // TODO : あまり綺麗ではない。sleepの追加がポイントだと思う。直すこと。
-    // TODO : sleepエントリ(一行)もクラスにするかだが、それでJSON.stringify通るかどうか確認すること。
+    var sleep=new Sleep(
+      '',
+      0,
+      0,
+      0,
+      '',
+      '',
+      '',
+      '',
+      0
+    );
+    // フォームからデーターをパースして取得します。
     form.forEach(function(value,key){
-      counter=makePostData(value,key,counter,postData,sleep);
-      // TODO : sleepもクラスにして参照渡しで戻せるか確認すること。
-      // TODO : sleepをクラスにして参照渡しで情報を追記し、それからaddの時に自前のプロパティーを連想配列に変換します。
-      if(counter===0){
-        // リスト新規作成。
-        sleep={date: '',wake: 0,bath: 0,bed: 0,sleep_in: '',sleep: '',deep_sleep: '',description: ''};
-        sleep.date=value;
-      }
+      sleep=makePostData(value,key,counter,postData,sleep);
+      counter=sleep.getCounter();
       counter=counter+1;
     });
-
-    console.log(postData);
 
     // 合計を反映します。
     document.getElementById("sleep_sum").textContent=changeMintoSleep(postData.getSleepSum());
@@ -172,7 +165,7 @@ function App() {
     })()
   ));
   return (
-    <form onSubmit={(e) => HandleSubmit(e)}>
+    <form onSubmit={(e) => handleSubmit(e)}>
     <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
     <div className="flex">
       <div className="submitbutton"><input type="submit" value="保存" /></div>

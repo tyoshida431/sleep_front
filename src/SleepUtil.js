@@ -24,6 +24,103 @@ class PostData{
   }
 };
 
+class Sleep{
+//      date: '',
+//      wake: 0,
+//      bath: 0,
+//      bed: 0,
+//      sleep_in: '',
+//      sleep: '',
+//      deep_sleep: '',
+//      description: ''
+  constructor(date,wake,bath,bed,sleepIn,sleep,deepSleep,description,counter){
+    this.date=date;
+    this.wake=wake;
+    this.bath=bath;
+    this.bed=bed;
+    this.sleepIn=sleepIn;
+    this.sleep=sleep;
+    this.deepSleep=deepSleep;
+    this.description=description;
+    this.counter=counter;
+  }
+  setDate(date){
+    this.date=date;
+  }
+  setWake(wake){
+    this.wake=wake;
+  }
+  setBath(bath){
+    this.bath=bath;
+  }
+  setBed(bed){
+    this.bed=bed;
+  }
+  setSleepIn(sleepIn){
+    this.sleepIn=sleepIn;
+  }
+  setSleep(sleep){
+    this.sleep=sleep;
+  }
+  setDeepSleep(deepSleep){
+    this.deepSleep=deepSleep;
+  }
+  setDescription(description){
+    this.description=description;
+  }
+  setCounter(counter){
+    this.counter=counter;
+  }
+  getDate(){
+    return this.date;
+  }
+  getWake(){
+    return this.wake;
+  }
+  getBath(){
+    return this.bath;
+  }
+  getBed(){
+    return this.bed;
+  }
+  getSleepIn(){
+    return this.sleepIn;
+  }
+  getSleep(){
+    return this.sleep;
+  }
+  getDeepSleep(){
+    return this.deepSleep;
+  }
+  getDescription(){
+    return this.description;
+  }
+  getCounter(){
+    return this.counter;
+  }
+  toAssociativeArray(){
+    var ret={
+      date: '',
+      wake: 0,
+      bath: 0,
+      bed: 0,
+      sleep_in: '',
+      sleep: '',
+      deep_sleep: '',
+      description: ''
+    };
+    ret.date=this.date;
+    ret.wake=this.wake;
+    ret.bath=this.bath;
+    ret.bed=this.bed;
+    ret.sleep_in=this.sleepIn;
+    ret.sleep=this.sleep;
+    ret.deep_sleep=this.deepSleep;
+    ret.description=this.description;
+    return ret;
+  }
+};
+
 // 睡眠の背景色を取得する。
 function getSleepBackColor(time){
    let hour=time.substr(0,time.indexOf(":",0));
@@ -222,38 +319,49 @@ function calcPreMonthFromNow(){
 function makePostData(value,key,counter,postData,sleep){
   switch(counter){
     case 0:
-      // TODO : sleepをクラスにして新規作成で参照渡しで返り、(出来る?)でdateを追記して戻る。
+      sleep=new Sleep(
+        '',
+        0,
+        0,
+        0,
+        '',
+        '',
+        '',
+        '',
+        0      
+      );
+      sleep.setDate(value);
       break;
     case 1:
-      sleep.wake=value;
+      sleep.setWake(value);
       break;
     case 2:
-      sleep.bath=value;
+      sleep.setBath(value);
       break;
     case 3:
-      sleep.bed=value;
+      sleep.setBed(value);
       break;
     case 4:
-      sleep.sleep_in=value;
+      sleep.setSleepIn(value);
       break;
     case 5:
-      sleep.sleep=value;
+      sleep.setSleep(value);
       postData.addSleepSum(changeSleeptoMin(value));
       break;
     case 6:
-      sleep.deep_sleep=value;
+      sleep.setDeepSleep(value);
       postData.addDeepSleepSum(changeSleeptoMin(value));
       break;
     case 7:
-      sleep.description=value;
-      // TODO : sleepをクラスにして連想配列化メソッド書くかも。
-      postData.addData(sleep);
+      sleep.setDescription(value);
+      postData.addData(sleep.toAssociativeArray());
       counter=-1;
       break;
     default:
       break;
   };
-  return counter;
+  sleep.setCounter(counter);
+  return sleep;
 }
 
 export {
@@ -267,5 +375,6 @@ export {
   getNextMonth,
   getPreMonth,
   makePostData,
-  PostData
+  PostData,
+  Sleep
 }
