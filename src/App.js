@@ -107,6 +107,7 @@ function App() {
       description: ''
     };
     // TODO : あまり綺麗ではない。sleepの追加がポイントだと思う。直すこと。
+    // TODO : sleepエントリ(一行)もクラスにするかだが、それでJSON.stringify通るかどうか確認すること。
     form.forEach(function(value,key){
       makePostData(value,key,counter,postData,sleep);
       if(counter===0){
