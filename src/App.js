@@ -9,7 +9,9 @@ import {
     getSumSleepColor,
     getSumDeepSleepColor,
     getNextMonth,
-    getPreMonth
+    getPreMonth,
+    makePostData,
+    PostData
 } from "./SleepUtil";
 
 function App() {
@@ -92,10 +94,8 @@ function App() {
   const HandleSubmit = (event) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
+    var postData=new PostData(0,0,[]);
     var counter=0;
-    var sleepSum=0;
-    var deepSleepSum=0;
-    var data=[];
     var sleep={
       date: '',
       wake: 0,
@@ -106,66 +106,35 @@ function App() {
       deep_sleep: '',
       description: ''
     };
+    // TODO : あまり綺麗ではない。sleepの追加がポイントだと思う。直すこと。
     form.forEach(function(value,key){
-      switch(counter){
-        case 0:
-          sleep={
-            date: '',
-            wake: 0,
-            bath: 0,
-            bed: 0,
-            sleep_in: '',
-            sleep: '',
-            deep_sleep: '',
-            description: ''
-          };
-          sleep.date=value;
-          break;
-        case 1:
-          sleep.wake=value;
-          break;
-        case 2:
-          sleep.bath=value;
-          break;
-        case 3:
-          sleep.bed=value;
-          break;
-        case 4:
-          sleep.sleep_in=value;
-          break;
-        case 5:
-          sleep.sleep=value;
-          sleepSum+=changeSleeptoMin(value);
-          break;
-        case 6:
-          sleep.deep_sleep=value;
-          deepSleepSum+=changeSleeptoMin(value);
-          break;
-        case 7:
-          sleep.description=value;
-          data.push(sleep);
-          counter=-1;
-          break;
-        default:
-          break;
-      };
+      makePostData(value,key,counter,postData,sleep);
+      if(counter===0){
+        // リスト新規作成。
+        sleep={date: '',wake: 0,bath: 0,bed: 0,sleep_in: '',sleep: '',deep_sleep: '',description: ''};
+        sleep.date=value;
+      }else if(counter===7){
+        counter=-1;
+      }
       counter=counter+1;
     });
-    
+
+    console.log(postData);
+
     // 合計を反映します。
-    document.getElementById("sleep_sum").textContent=changeMintoSleep(sleepSum);
-    document.getElementById("deep_sleep_sum").textContent=changeMintoSleep(deepSleepSum);
-    document.getElementById("sleep_sum").className=getSumSleepColor(sleepSum);
-    document.getElementById("sleep_sum_box").className=getSumSleepColor(sleepSum);
-    document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(deepSleepSum);
-    document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(deepSleepSum);
+    document.getElementById("sleep_sum").textContent=changeMintoSleep(postData.getSleepSum());
+    document.getElementById("deep_sleep_sum").textContent=changeMintoSleep(postData.getDeepSleepSum());
+    document.getElementById("sleep_sum").className=getSumSleepColor(postData.getSleepSum());
+    document.getElementById("sleep_sum_box").className=getSumSleepColor(postData.getSleepSum());
+    document.getElementById("deep_sleep_sum").className=getSumDeepSleepColor(postData.getDeepSleepSum());
+    document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(postData.getDeepSleepSum());
 
     // バックエンドに一覧データーを送信する。
     try{
       const post_options={
         method: "POST",
         headers: {"ContentType": "application/json"},
-        body: JSON.stringify(data)
+        body: JSON.stringify(postData.getData())
       };
       const response=fetch(`${process.env.REACT_APP_BASE_URL}/sleep`,post_options);
       if(!response.ok){

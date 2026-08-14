@@ -1,3 +1,29 @@
+class PostData{
+  constructor(sleepSum,deepSleepSum,data){
+    this.sleepSum=sleepSum;
+    this.deepSleepSum=deepSleepSum;
+    this.data=data;
+  }
+  addSleepSum(sleepSum){
+    this.sleepSum=sleepSum+this.sleepSum;
+  }
+  addDeepSleepSum(deepSleepSum){
+    this.deepSleepSum=deepSleepSum+this.deepSleepSum;
+  }
+  addData(data){
+    this.data.push(data);
+  }
+  getSleepSum(){
+    return this.sleepSum;
+  }
+  getDeepSleepSum(){
+    return this.deepSleepSum;
+  }
+  getData(){
+    return this.data
+  }
+};
+
 // 睡眠の背景色を取得する。
 function getSleepBackColor(time){
    let hour=time.substr(0,time.indexOf(":",0));
@@ -193,14 +219,49 @@ function calcPreMonthFromNow(){
   return ret;
 }
 
+function makePostData(value,key,counter,postData,sleep){
+  switch(counter){
+    case 0:
+      break;
+    case 1:
+      sleep.wake=value;
+      break;
+    case 2:
+      sleep.bath=value;
+      break;
+    case 3:
+      sleep.bed=value;
+      break;
+    case 4:
+      sleep.sleep_in=value;
+      break;
+    case 5:
+      sleep.sleep=value;
+      postData.addSleepSum(changeSleeptoMin(value));
+      break;
+    case 6:
+      sleep.deep_sleep=value;
+      postData.addDeepSleepSum(changeSleeptoMin(value));
+      break;
+    case 7:
+      sleep.description=value;
+      postData.addData(sleep);
+      break;
+    default:
+      break;
+  };
+}
+
 export {
-    getSleepBackColor,
-    getDeepSleepBackColor,
-    getWakeBackColor,
-    changeSleeptoMin,
-    changeMintoSleep,
-    getSumSleepColor,
-    getSumDeepSleepColor,
-    getNextMonth,
-    getPreMonth,
+  getSleepBackColor,
+  getDeepSleepBackColor,
+  getWakeBackColor,
+  changeSleeptoMin,
+  changeMintoSleep,
+  getSumSleepColor,
+  getSumDeepSleepColor,
+  getNextMonth,
+  getPreMonth,
+  makePostData,
+  PostData
 }
