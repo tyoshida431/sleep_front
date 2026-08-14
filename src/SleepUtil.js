@@ -98,6 +98,9 @@ class Sleep{
   getCounter(){
     return this.counter;
   }
+  addCounter(){
+    this.counter=this.counter+1;
+  }
   toAssociativeArray(){
     var ret={
       date: '',
@@ -316,8 +319,8 @@ function calcPreMonthFromNow(){
   return ret;
 }
 
-function makePostData(value,key,counter,postData,sleep){
-  switch(counter){
+function makePostData(value,key,postData,sleep){
+  switch(sleep.getCounter()){
     case 0:
       sleep=new Sleep(
         '',
@@ -355,12 +358,11 @@ function makePostData(value,key,counter,postData,sleep){
     case 7:
       sleep.setDescription(value);
       postData.addData(sleep.toAssociativeArray());
-      counter=-1;
+      sleep.setCounter(-1);
       break;
     default:
       break;
   };
-  sleep.setCounter(counter);
   return sleep;
 }
 

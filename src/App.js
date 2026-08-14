@@ -110,9 +110,8 @@ function App() {
     );
     // フォームからデーターをパースして取得します。
     form.forEach(function(value,key){
-      sleep=makePostData(value,key,counter,postData,sleep);
-      counter=sleep.getCounter();
-      counter=counter+1;
+      sleep=makePostData(value,key,postData,sleep);
+      sleep.addCounter();
     });
 
     // 合計を反映します。
