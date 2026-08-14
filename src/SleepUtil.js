@@ -222,6 +222,7 @@ function calcPreMonthFromNow(){
 function makePostData(value,key,counter,postData,sleep){
   switch(counter){
     case 0:
+      // TODO : sleepをクラスにして新規作成で参照渡しで返り、(出来る?)でdateを追記して戻る。
       break;
     case 1:
       sleep.wake=value;
@@ -245,6 +246,7 @@ function makePostData(value,key,counter,postData,sleep){
       break;
     case 7:
       sleep.description=value;
+      // TODO : sleepをクラスにして連想配列化メソッド書くかも。
       postData.addData(sleep);
       counter=-1;
       break;
