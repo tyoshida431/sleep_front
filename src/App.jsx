@@ -34,14 +34,14 @@ function App() {
     const fetchData=async()=>{
       try{
         if(!urlParam){
-          const response=await fetch(`${process.env.REACT_APP_BASE_URL}/sleep`,{method:'GET'});
+          const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,{method:'GET'});
           if(!response.ok){
             throw new Error(`HTTP error! status : ${response.status}`);
           }
           const result=await response.json();
           setGets(result);
         }else{
-          const response=await fetch(`${process.env.REACT_APP_BASE_URL}/sleep?`+query,{method:'GET'});
+          const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep?`+query,{method:'GET'});
           if(!response.ok){
             throw new Error(`HTTP error! status : ${response.status}`);
           }
@@ -128,7 +128,7 @@ function App() {
         headers: {"ContentType": "application/json"},
         body: JSON.stringify(postData.getData())
       };
-      const response=fetch(`${process.env.REACT_APP_BASE_URL}/sleep`,post_options);
+      const response=fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
       if(!response.ok){
         throw new Error(`HTTP error! status : ${response.status}`);
       }
