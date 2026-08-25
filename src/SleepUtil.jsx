@@ -170,7 +170,7 @@ function getDeepSleepBackColor(time){
 
 // 起床の背景色を取得する。
 function getWakeBackColor(time){
-  var ret="";
+  var ret;
   if(time<0){
     ret="aka";
   }else{
@@ -245,7 +245,7 @@ function getSumDeepSleepColor(time){
 
 // 次の月を取得する。
 function getNextMonth(queryMonth){
-  var ret="";
+  var ret;
   if(queryMonth===undefined){
     ret=calcNextMonthFromNow();
   }else{
@@ -266,7 +266,7 @@ function getNextMonth(queryMonth){
 
 // 現時点から次の月を計算する。
 function calcNextMonthFromNow(){
-  var ret="";
+  var ret;
   const now=new Date();
   var year=now.getFullYear();
   // 0始まりの為+1します。
@@ -283,7 +283,7 @@ function calcNextMonthFromNow(){
 
 // 前の月を取得する。
 function getPreMonth(queryMonth){
-  var ret="";
+  var ret;
   if(queryMonth===undefined){
     ret=calcPreMonthFromNow();
   }else{
@@ -304,7 +304,7 @@ function getPreMonth(queryMonth){
 
 // 今から前の月を計算する。
 function calcPreMonthFromNow(){
-  var ret="";
+  var ret;
   const now=new Date();
   var year=now.getFullYear();
   // 0始まりのため+1します。
