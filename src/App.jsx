@@ -164,7 +164,7 @@ function App() {
   ));
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-    <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
+    <div className="monthlink"><a href={'/sleep?month='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?month='+nextMonth}>{nextMonth}→</a></div>
     <div className="flex">
       <div className="submitbutton"><input type="submit" value="保存" /></div>
       <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{changeMintoSleep(sleepSum)}</label></div></div>
