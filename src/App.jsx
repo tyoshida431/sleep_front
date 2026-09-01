@@ -125,7 +125,7 @@ function App() {
     try{
       const post_options={
         method: "POST",
-        headers: {"ContentType": "application/json"},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(postData.getData())
       };
       const response=fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
@@ -187,7 +187,7 @@ function App() {
         {data.map((row) => {
           return (
             <tr key={row.id}>
-              <td><input type='text' size="10" defaultValue={row.date} name="date" readOnly /></td>
+              <td><input type='text' size="10" defaultValue={row.date_str} name="date" readOnly /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.wakeClassName} defaultValue={row.wake} name="wake" /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.bathClassName} defaultValue={row.bath} name="bath" /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.bedClassName} defaultValue={row.bed} name="bed" /></td>
