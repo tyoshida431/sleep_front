@@ -122,23 +122,27 @@ function App() {
     document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(postData.getDeepSleepSum());
 
     // バックエンドに一覧データーを送信する。
-    try{
-      const post_options={
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify(postData.getData())
-      };
-      const response=fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
-      if(!response.ok){
-        throw new Error(`HTTP error! status : ${response.status}`);
+    const postProc=async()=>{
+      try{
+        const post_options={
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(postData.getData())
+        };
+        const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
+        console.log(response);
+        if(!response.ok){
+          throw new Error(`HTTP error! status : ${response.status}`);
+        }
+        const result=response.json();
+      }catch(error){
+        alert("エラー : "+error.message);
+        return(<p>{error}</p>);
+      }finally{
+        setLoading(false);
       }
-      const result=response.json();
-      setGets(result)
-    }catch(error){
-      return(<p>{error}</p>);
-    }finally{
-      setLoading(false);
-    }
+    };
+    postProc();
 
     if(loading){
       return(<p>読込中...</p>);
