@@ -36,14 +36,15 @@ function App() {
         if(!urlParam){
           const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,{method:'GET'});
           if(!response.ok){
-            throw new Error(`HTTP error! status : ${response.status}`);
+            throw new Error(`HTTP error! status : ${response.status} + ${response.message}`);
           }
           const result=await response.json();
           setGets(result);
         }else{
           const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep?`+query,{method:'GET'});
           if(!response.ok){
-            throw new Error(`HTTP error! status : ${response.status}`);
+            const errorData=await response.json();
+            throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
           }
           const result=await response.json();
           setGets(result);
@@ -130,9 +131,9 @@ function App() {
           body: JSON.stringify(postData.getData())
         };
         const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
-        console.log(response);
         if(!response.ok){
-          throw new Error(`HTTP error! status : ${response.status}`);
+          const errorData=await response.json();
+          throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
         }
         const result=response.json();
       }catch(error){
