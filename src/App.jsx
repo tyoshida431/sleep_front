@@ -36,14 +36,15 @@ function App() {
         if(!urlParam){
           const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,{method:'GET'});
           if(!response.ok){
-            throw new Error(`HTTP error! status : ${response.status}`);
+            throw new Error(`HTTP error! status : ${response.status} + ${response.message}`);
           }
           const result=await response.json();
           setGets(result);
         }else{
           const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep?`+query,{method:'GET'});
           if(!response.ok){
-            throw new Error(`HTTP error! status : ${response.status}`);
+            const errorData=await response.json();
+            throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
           }
           const result=await response.json();
           setGets(result);
@@ -122,23 +123,27 @@ function App() {
     document.getElementById("deep_sleep_sum_box").className=getSumDeepSleepColor(postData.getDeepSleepSum());
 
     // バックエンドに一覧データーを送信する。
-    try{
-      const post_options={
-        method: "POST",
-        headers: {"ContentType": "application/json"},
-        body: JSON.stringify(postData.getData())
-      };
-      const response=fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
-      if(!response.ok){
-        throw new Error(`HTTP error! status : ${response.status}`);
+    const postProc=async()=>{
+      try{
+        const post_options={
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(postData.getData())
+        };
+        const response=await fetch(`${import.meta.env.VITE_BASE_URL}/sleep`,post_options);
+        if(!response.ok){
+          const errorData=await response.json();
+          throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
+        }
+        //const result=response.json();
+      }catch(error){
+        alert("エラー : "+error.message);
+        return(<p>{error}</p>);
+      }finally{
+        setLoading(false);
       }
-      const result=response.json();
-      setGets(result)
-    }catch(error){
-      return(<p>{error}</p>);
-    }finally{
-      setLoading(false);
-    }
+    };
+    postProc();
 
     if(loading){
       return(<p>読込中...</p>);
@@ -164,7 +169,7 @@ function App() {
   ));
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-    <div className="monthlink"><a href={'/sleep?='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?='+nextMonth}>{nextMonth}→</a></div>
+    <div className="monthlink"><a href={'/sleep?month='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?month='+nextMonth}>{nextMonth}→</a></div>
     <div className="flex">
       <div className="submitbutton"><input type="submit" value="保存" /></div>
       <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{changeMintoSleep(sleepSum)}</label></div></div>
@@ -187,7 +192,7 @@ function App() {
         {data.map((row) => {
           return (
             <tr key={row.id}>
-              <td><input type='text' size="10" defaultValue={row.date} name="date" readOnly /></td>
+              <td><input type='text' size="10" defaultValue={row.date_str} name="date" readOnly /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.wakeClassName} defaultValue={row.wake} name="wake" /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.bathClassName} defaultValue={row.bath} name="bath" /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.bedClassName} defaultValue={row.bed} name="bed" /></td>
