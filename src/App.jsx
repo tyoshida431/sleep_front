@@ -135,7 +135,7 @@ function App() {
           const errorData=await response.json();
           throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
         }
-        const result=response.json();
+        //const result=response.json();
       }catch(error){
         alert("エラー : "+error.message);
         return(<p>{error}</p>);
