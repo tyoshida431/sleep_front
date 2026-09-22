@@ -82,6 +82,8 @@ function App() {
     }
   };
   const handleChangeDeepSleepTime = (event) => {
+    setLoading(true);
+    setError(null);
     let time=event.target.value;
     if(0<time.indexOf(":",0)){
       let deepSleepTimeClassName=getDeepSleepBackColor(time);
@@ -94,22 +96,195 @@ function App() {
 
   // 起床ボタンが押下された場合のハンドラー。
   const handleWake = (event) => {
-    alert("起床ボタンが押下されました。");
-    //console.log(event.currentTarget);
-    console.log(event.currentTarget.form);
-    // TODO : responseで戻ってきた時間を、
-    // ドンキーにformを回して今日の日付のname="date"のname="wake"のvalueに
-    // 格納する。ドンキーだがやります。
-  }
+    const now = new Date();
+    const year = now.getFullYear();
+    const month_tmp = now.getMonth()+1;
+    const day_tmp = now.getDate();
+    const hour_tmp = now.getHours();
+    const minute_tmp = now.getMinutes();
+    const month = month_tmp.toString().padStart(2,"0");
+    const day = day_tmp.toString().padStart(2,"0");
+    const hour = hour_tmp.toString().padStart(2,"0");
+    const minute = minute_tmp.toString().padStart(2,"0");
+    const time = `${year}-${month}-${day}T${hour}:${minute}:00:00`;
+    var wakeTime={
+      wakeTime: '',
+    };
+    wakeTime.wakeTime=time;
+    // バックエンドに起床を送信する。
+    const postProc=async()=>{
+      try{
+        const post_options={
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(wakeTime)
+        };
+        const response=await fetch(`${import.meta.env.VITE_BASE_URL}/wake`,post_options);
+        const result=await response.json();
+        if(!response.ok){
+          const errorData=await response.json();
+          throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
+        }
+        const searchDay=year+"-"+month+"-"+day;
+        const rows = document.querySelectorAll('#sleeps tbody tr');
+        for (let row of rows){
+          const dateText=row.querySelector('.date-cell').firstElementChild.value;
+          if(dateText === searchDay){
+            console.log(dateText);
+            const inputField = row.querySelector('input[name="wake"]');
+            inputField.value=result.wake;
+            let wakeClassName=getWakeBackColor(result.wake);
+            inputField.className=wakeClassName;
+            break;
+          }
+        }
+      }catch(error){
+        alert("エラー : "+error.message);
+        setError(err.message);
+      }finally{
+        setLoading(false);
+      }
+    };
+    postProc();
+
+    if(loading){
+      return(<p>読込中...</p>);
+    }
+    if(error){
+      return(<p>{error}</p>);
+    }   
+   }
 
   // 入浴ボタンが押下された場合のハンドラー。
   const handleBath = (event) => {
-    alert("入浴ボタンが押下されました。");
-  }
+    const now = new Date();
+    const year = now.getFullYear();
+    const month_tmp = now.getMonth()+1;
+    const day_tmp = now.getDate();
+    const hour_tmp = now.getHours();
+    const minute_tmp = now.getMinutes();
+    const month = month_tmp.toString().padStart(2,"0");
+    let day = day_tmp.toString().padStart(2,"0");
+    const hour = hour_tmp.toString().padStart(2,"0");
+    const minute = minute_tmp.toString().padStart(2,"0");
+    const time = `${year}-${month}-${day}T${hour}:${minute}:00:00`;
+    var bathTime={
+      bathTime: '',
+    };
+    bathTime.bathTime=time;
+    // バックエンドに入浴を送信する。
+    const postProc=async()=>{
+      try{
+        const post_options={
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(bathTime)
+        };
+        const response=await fetch(`${import.meta.env.VITE_BASE_URL}/bath`,post_options);
+        const result=await response.json();
+        if(!response.ok){
+          const errorData=await response.json();
+          throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
+        }
+        // 0時跨ぎ判定で、この間は前日からまたいでいると判断する。
+        if(0<=hour && hour<12){
+          const pre_day=day_tmp-1;
+          day=pre_day.toString().padStart(2,"0");
+        }
+        const searchDay=year+"-"+month+"-"+day;
+        const rows = document.querySelectorAll('#sleeps tbody tr');
+        for (let row of rows){
+          const dateText=row.querySelector('.date-cell').firstElementChild.value;
+          if(dateText === searchDay){
+            console.log(dateText);
+            const inputField = row.querySelector('input[name="bath"]');
+            inputField.value=result.bath;
+            let bathClassName=getWakeBackColor(result.bath);
+            inputField.className=bathClassName;
+            break;
+          }
+        }
+      }catch(error){
+        alert("エラー : "+error.message);
+        setError(err.message);
+      }finally{
+        setLoading(false);
+      }
+    };
+    postProc();
+
+    if(loading){
+      return(<p>読込中...</p>);
+    }
+    if(error){
+      return(<p>{error}</p>);
+    }   
+   }
 
   // 就寝ボタンが押下された場合のハンドラー。
   const handleSleepIn = (event) => {
-    alert("就寝ボタンが押下されました。");
+    const now = new Date();
+    const year = now.getFullYear();
+    const month_tmp = now.getMonth()+1;
+    const day_tmp = now.getDate();
+    const hour_tmp = now.getHours();
+    const minute_tmp = now.getMinutes();
+    const month = month_tmp.toString().padStart(2,"0");
+    let day = day_tmp.toString().padStart(2,"0");
+    const hour = hour_tmp.toString().padStart(2,"0");
+    const minute = minute_tmp.toString().padStart(2,"0");
+    const time = `${year}-${month}-${day}T${hour}:${minute}:00:00`;
+    var bedTime={
+      bedTime: '',
+    };
+    bedTime.bedTime=time;
+    // バックエンドに起床を送信する。
+    const postProc=async()=>{
+      try{
+        const post_options={
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify(bedTime)
+        };
+        const response=await fetch(`${import.meta.env.VITE_BASE_URL}/bed`,post_options);
+        const result=await response.json();
+        if(!response.ok){
+          const errorData=await response.json();
+          throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
+        }
+        // 0時跨ぎ判定で、この間は前日からまたいでいると判断する。
+        if(0<=hour && hour<12){
+          const pre_day=day_tmp-1;
+          day=pre_day.toString().padStart(2,"0");
+        }
+        const searchDay=year+"-"+month+"-"+day;
+        const rows = document.querySelectorAll('#sleeps tbody tr');
+        for (let row of rows){
+          const dateText=row.querySelector('.date-cell').firstElementChild.value;
+          if(dateText === searchDay){
+            console.log(dateText);
+            const inputField = row.querySelector('input[name="bed"]');
+            inputField.value=result.bed;
+            let bedClassName=getWakeBackColor(result.bed);
+            inputField.className=bedClassName;
+            break;
+          }
+        }
+      }catch(error){
+        alert("エラー : "+error.message);
+        setError(err.message);
+      }finally{
+        setLoading(false);
+      }
+    };
+    postProc();
+
+    if(loading){
+      return(<p>読込中...</p>);
+    }
+    if(error){
+      return(<p>{error}</p>);
+    }   
   }
 
   // 保存ボタンが押下された場合のハンドラー。
@@ -155,7 +330,6 @@ function App() {
           const errorData=await response.json();
           throw new Error(`HTTP error! status : ${response.status}` + ` ${errorData.message}`);
         }
-        //const result=response.json();
       }catch(error){
         alert("エラー : "+error.message);
         return(<p>{error}</p>);
@@ -216,7 +390,7 @@ function App() {
          <button type="button" onClick={(e) => handleSleepIn(e)}>就寝</button>
        </div>
     </div>
-    <table border='1'>
+    <table id='sleeps' border='1'>
       <thead>
         <tr>
           <th>日付</th>
@@ -233,7 +407,7 @@ function App() {
         {data.map((row) => {
           return (
             <tr key={row.id}>
-              <td><input type='text' size="10" defaultValue={row.date_str} name="date" readOnly /></td>
+              <td className="date-cell"><input type='text' size="10" defaultValue={row.date_str} name="date" readOnly /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.wakeClassName} defaultValue={row.wake} name="wake" /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.bathClassName} defaultValue={row.bath} name="bath" /></td>
               <td><input type='text' onChange={(e) => handleChangeNumber(e)} size="4" className={row.bedClassName} defaultValue={row.bed} name="bed" /></td>
