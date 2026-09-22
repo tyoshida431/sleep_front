@@ -92,6 +92,26 @@ function App() {
     }
   };
 
+  // 起床ボタンが押下された場合のハンドラー。
+  const handleWake = (event) => {
+    alert("起床ボタンが押下されました。");
+    //console.log(event.currentTarget);
+    console.log(event.currentTarget.form);
+    // TODO : responseで戻ってきた時間を、
+    // ドンキーにformを回して今日の日付のname="date"のname="wake"のvalueに
+    // 格納する。ドンキーだがやります。
+  }
+
+  // 入浴ボタンが押下された場合のハンドラー。
+  const handleBath = (event) => {
+    alert("入浴ボタンが押下されました。");
+  }
+
+  // 就寝ボタンが押下された場合のハンドラー。
+  const handleSleepIn = (event) => {
+    alert("就寝ボタンが押下されました。");
+  }
+
   // 保存ボタンが押下された場合のハンドラー。
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -169,11 +189,32 @@ function App() {
   ));
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
-    <div className="monthlink"><a href={'/sleep?month='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?month='+nextMonth}>{nextMonth}→</a></div>
+    <div className="monthlink">
+      <a href={'/sleep?month='+preMonth}>←{preMonth}</a>&nbsp;<a href={'/sleep?month='+nextMonth}>{nextMonth}→</a>
+    </div>
     <div className="flex">
-      <div className="submitbutton"><input type="submit" value="保存" /></div>
-      <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}><div id="sleep_sum_div" className="sleep_sum"><label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{changeMintoSleep(sleepSum)}</label></div></div>
-      <div id="deep_sleep_sum_box" className={getSumDeepSleepColor(deepSleepSum)}> <div id="deep_sleep_sum_div" className="deep_sleep_sum"><label id="deep_sleep_sum" className={getSumDeepSleepColor(deepSleepSum)}>{changeMintoSleep(deepSleepSum)}</label></div></div>
+      <div className="submitbutton">
+        <input type="submit" value="保存" />
+      </div>
+      <div id="sleep_sum_box" className={getSumSleepColor(sleepSum)}>
+        <div id="sleep_sum_div" className="sleep_sum">
+          <label id="sleep_sum" className={getSumSleepColor(sleepSum)}>{changeMintoSleep(sleepSum)}</label>
+        </div>
+      </div>
+      <div id="deep_sleep_sum_box" className={getSumDeepSleepColor(deepSleepSum)}>
+        <div id="deep_sleep_sum_div" className="deep_sleep_sum">
+          <label id="deep_sleep_sum" className={getSumDeepSleepColor(deepSleepSum)}>{changeMintoSleep(deepSleepSum)}</label>
+        </div>
+       </div>
+       <div className="wakebutton">
+         <button type="button" onClick={(e) => handleWake(e)}>起床</button>
+       </div>
+       <div className="wakebutton">
+         <button type="button" onClick={(e) => handleBath(e)}>入浴</button>
+       </div>
+       <div className="wakebutton">
+         <button type="button" onClick={(e) => handleSleepIn(e)}>就寝</button>
+       </div>
     </div>
     <table border='1'>
       <thead>

@@ -132,6 +132,10 @@ div.submitbutton{
     background: white;
     margin: 1em;
 }
+div.wakebutton{
+    background: white;
+    margin: 1em;
+}
 div.sleep_sum{
     background: white;
     margin: 1em;
