@@ -82,8 +82,6 @@ function App() {
     }
   };
   const handleChangeDeepSleepTime = (event) => {
-    setLoading(true);
-    setError(null);
     let time=event.target.value;
     if(0<time.indexOf(":",0)){
       let deepSleepTimeClassName=getDeepSleepBackColor(time);
