@@ -93,7 +93,7 @@ function App() {
   };
 
   // 起床ボタンが押下された場合のハンドラー。
-  const handleWake = (event) => {
+  const handleWake = () => {
     const now = new Date();
     const year = now.getFullYear();
     const month_tmp = now.getMonth()+1;
@@ -138,7 +138,7 @@ function App() {
         }
       }catch(error){
         alert("エラー : "+error.message);
-        setError(err.message);
+        setError(error.message);
       }finally{
         setLoading(false);
       }
@@ -154,14 +154,14 @@ function App() {
    }
 
   // 入浴ボタンが押下された場合のハンドラー。
-  const handleBath = (event) => {
+  const handleBath = () => {
     const now = new Date();
     const year = now.getFullYear();
-    const month_tmp = now.getMonth()+1;
+    let month_tmp = now.getMonth()+1;
     const day_tmp = now.getDate();
     const hour_tmp = now.getHours();
     const minute_tmp = now.getMinutes();
-    const month = month_tmp.toString().padStart(2,"0");
+    let month = month_tmp.toString().padStart(2,"0");
     let day = day_tmp.toString().padStart(2,"0");
     const hour = hour_tmp.toString().padStart(2,"0");
     const minute = minute_tmp.toString().padStart(2,"0");
@@ -170,7 +170,6 @@ function App() {
       bathTime: '',
     };
     bathTime.bathTime=time;
-    // バックエンドに入浴を送信する。
     const postProc=async()=>{
       try{
         const post_options={
@@ -186,8 +185,15 @@ function App() {
         }
         // 0時跨ぎ判定で、この間は前日からまたいでいると判断する。
         if(0<=hour && hour<12){
-          const pre_day=day_tmp-1;
-          day=pre_day.toString().padStart(2,"0");
+          if (day_tmp === 1) {
+            const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+            month_tmp=month_tmp-1;
+            month = month_tmp.toString().padStart(2,"0");
+            day=lastDayOfLastMonth.getDate().toString().padStart(2,"0");
+          } else {
+            const pre_day=day_tmp-1;
+            day=pre_day.toString().padStart(2,"0");
+          }
         }
         const searchDay=year+"-"+month+"-"+day;
         const rows = document.querySelectorAll('#sleeps tbody tr');
@@ -204,7 +210,7 @@ function App() {
         }
       }catch(error){
         alert("エラー : "+error.message);
-        setError(err.message);
+        setError(error.message);
       }finally{
         setLoading(false);
       }
@@ -220,14 +226,14 @@ function App() {
    }
 
   // 就寝ボタンが押下された場合のハンドラー。
-  const handleSleepIn = (event) => {
+  const handleSleepIn = () => {
     const now = new Date();
     const year = now.getFullYear();
-    const month_tmp = now.getMonth()+1;
+    let month_tmp = now.getMonth()+1;
     const day_tmp = now.getDate();
     const hour_tmp = now.getHours();
     const minute_tmp = now.getMinutes();
-    const month = month_tmp.toString().padStart(2,"0");
+    let month = month_tmp.toString().padStart(2,"0");
     let day = day_tmp.toString().padStart(2,"0");
     const hour = hour_tmp.toString().padStart(2,"0");
     const minute = minute_tmp.toString().padStart(2,"0");
@@ -236,7 +242,6 @@ function App() {
       bedTime: '',
     };
     bedTime.bedTime=time;
-    // バックエンドに起床を送信する。
     const postProc=async()=>{
       try{
         const post_options={
@@ -252,8 +257,15 @@ function App() {
         }
         // 0時跨ぎ判定で、この間は前日からまたいでいると判断する。
         if(0<=hour && hour<12){
-          const pre_day=day_tmp-1;
-          day=pre_day.toString().padStart(2,"0");
+          if (day_tmp === 1) {
+            const lastDayOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+            month_tmp=month_tmp-1;
+            month = month_tmp.toString().padStart(2,"0");
+            day=lastDayOfLastMonth.getDate().toString().padStart(2,"0");
+          } else {
+            const pre_day=day_tmp-1;
+            day=pre_day.toString().padStart(2,"0");
+          }
         }
         const searchDay=year+"-"+month+"-"+day;
         const rows = document.querySelectorAll('#sleeps tbody tr');
@@ -270,7 +282,7 @@ function App() {
         }
       }catch(error){
         alert("エラー : "+error.message);
-        setError(err.message);
+        setError(error.message);
       }finally{
         setLoading(false);
       }
